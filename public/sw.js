@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'bracket-control-';
-const CACHE = `${CACHE_PREFIX}v18`;
+const CACHE = `${CACHE_PREFIX}v19`;
 const SCOPE_URL = new URL(self.registration.scope);
 const APP_URL = SCOPE_URL.href;
 const REQUIRED_SHELL_FILES = ['manifest.webmanifest', 'favicon.svg', 'icon.svg'];
