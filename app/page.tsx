@@ -333,9 +333,25 @@ function makeFrameHtml(saved: Saved) {
     window.__LOCAL_ACTIONS=${safeJson(actions)};
     window.__LOCAL_ASSETS=${safeJson(saved.tournament.assets || {})};
     window.__LOCAL_SHOW_ROOM_CODES_EARLY=${saved.showRoomCodesEarly ? 'true' : 'false'};
+    window.__LOCAL_BROWSER_PINCH_ZOOM=true;
     window.__localCountryFlag=function(code){var c=String(code||'').toUpperCase();var f=Array.from(c).map(function(x){return String.fromCodePoint(127397+x.charCodeAt(0))}).join('');return 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text x="32" y="48" text-anchor="middle" font-size="48">'+f+'</text></svg>')};
     window.__localRankIcon=function(rank){return 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="#333"/><text x="32" y="43" text-anchor="middle" font-family="Arial" font-size="30" font-weight="bold" fill="white">'+String(rank||'?').toUpperCase()+'</text></svg>')};
     (function(){window.fetch=async function(input){var u=typeof input==='string'?input:(input&&input.url)||'';if(/\\/json\\/bracket\\/detail-support\\//.test(u))return new Response(JSON.stringify({IDtournament:${saved.tournament.id},HistoricalMatches:[],PlayerDirectory:[],RecentPlacementsByPlayer:{},SeasonRankingsByPlayer:{},SeasonPoints:null}),{status:200,headers:{'Content-Type':'application/json'}});if(/\\/json\\/bracket\\//.test(u))return new Response(JSON.stringify(window.__LOCAL_PAYLOAD),{status:200,headers:{'Content-Type':'application/json','X-Server-Now-Utc-Ms':String(Date.now())}});if(/\\/json\\/info\\//.test(u))return new Response(JSON.stringify(window.__LOCAL_INFO),{status:200,headers:{'Content-Type':'application/json'}});return new Response('{}',{status:404,headers:{'Content-Type':'application/json'}})};
+      var pagePinching=false;
+      function allowOuterPagePinch(e){
+        if(e.type==='touchstart'&&e.touches&&e.touches.length>1)pagePinching=true;
+        if(e.type==='touchmove'&&pagePinching)e.stopImmediatePropagation();
+        if((e.type==='touchend'||e.type==='touchcancel')&&e.touches&&e.touches.length===0)pagePinching=false;
+      }
+      window.addEventListener('touchstart',allowOuterPagePinch,{capture:true,passive:true});
+      window.addEventListener('touchmove',allowOuterPagePinch,{capture:true,passive:true});
+      window.addEventListener('touchend',allowOuterPagePinch,{capture:true,passive:true});
+      window.addEventListener('touchcancel',allowOuterPagePinch,{capture:true,passive:true});
+      window.addEventListener('gesturestart',function(e){pagePinching=true;e.stopImmediatePropagation()},{capture:true,passive:true});
+      window.addEventListener('gesturechange',function(e){if(pagePinching)e.stopImmediatePropagation()},{capture:true,passive:true});
+      window.addEventListener('gestureend',function(e){if(pagePinching)e.stopImmediatePropagation();pagePinching=false},{capture:true,passive:true});
+      window.addEventListener('wheel',function(e){if(e.ctrlKey)e.stopImmediatePropagation()},{capture:true,passive:true});
+      var pinchStyle=document.createElement('style');pinchStyle.textContent='#over{touch-action:pinch-zoom!important}';document.head.appendChild(pinchStyle);
       var active=null;
       function addButton(){var host=document.getElementById('detail-pane-scroll');if(!host||!active)return;var action=window.__LOCAL_ACTIONS[active];if(!action)return;var old=document.getElementById('local-reveal-button');if(old&&old.parentNode===host){old.textContent=action.label;old.disabled=action.disabled;return}if(old)old.remove();var b=document.createElement('button');b.id='local-reveal-button';b.textContent=action.label;b.disabled=action.disabled;b.style.cssText='position:sticky;bottom:0;width:100%;min-height:48px;margin-top:18px;border:1px solid #f06b7d;background:#9f2135;color:white;font:900 13px InterVariable,Inter,Arial,sans-serif;letter-spacing:.06em;cursor:pointer;z-index:99';b.onclick=function(e){e.stopPropagation();parent.postMessage({type:'bracket-local-reveal',matchId:Number(active)},'*')};host.appendChild(b)}
       document.addEventListener('click',function(e){var z=e.target&&e.target.closest&&e.target.closest('.interactive-zone[data-kind="match"]');if(z){active=z.dataset.matchId;parent.postMessage({type:'bracket-local-select',matchId:Number(active)},'*');setTimeout(addButton,30);setTimeout(addButton,200)}},true);

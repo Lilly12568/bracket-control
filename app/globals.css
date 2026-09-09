@@ -5,7 +5,7 @@
 @theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --color-card: var(--card); --color-card-foreground: var(--card-foreground); --color-popover: var(--popover); --color-popover-foreground: var(--popover-foreground); --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground); --color-secondary: var(--secondary); --color-secondary-foreground: var(--secondary-foreground); --color-muted: var(--muted); --color-muted-foreground: var(--muted-foreground); --color-accent: var(--accent); --color-accent-foreground: var(--accent-foreground); --color-destructive: var(--destructive); --color-border: var(--border); --color-input: var(--input); --color-ring: var(--ring); --font-sans: var(--font-geist-sans); --font-mono: var(--font-geist-mono); --font-heading: var(--font-geist-sans); --radius-sm: .1rem; --radius-md: .15rem; --radius-lg: .2rem; --radius-xl: .25rem; }
 :root { --background: #111; --foreground: #f4f1e8; --card: #202020; --card-foreground: #f4f1e8; --popover: #1c1c1c; --popover-foreground: #f4f1e8; --primary: #a91f32; --primary-foreground: white; --secondary: #2a2a2a; --secondary-foreground: #f4f1e8; --muted: #292929; --muted-foreground: #aaa; --accent: #343434; --accent-foreground: white; --destructive: #d23745; --border: rgb(255 255 255 / 13%); --input: rgb(255 255 255 / 16%); --ring: #d43148; }
 * { box-sizing: border-box; }
-html, body { margin: 0; min-width: 320px; height: 100%; overflow: hidden; color-scheme: dark; }
+html, body { margin: 0; min-width: 320px; height: 100%; overflow: hidden; color-scheme: dark; touch-action: pinch-zoom; }
 body { background: #111; color: #f4f1e8; font-family: var(--font-geist-sans), Arial, sans-serif; }
 button { font: inherit; }
 .bracket-app { position: fixed; inset: 0; overflow: hidden; background: #111; }
@@ -49,8 +49,8 @@ button { font: inherit; }
 .loading-screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #111; color: #eee; }.loading-screen span { color: #888; font-size: 12px; }
 @media (max-width: 720px) { .title-link span { display: none; }.original-header nav button { min-width: 52px; padding: 0 12px; }.original-header nav button span { display: none; }.shortcut-hint { display: none; } }
 
-.source-shell { position: fixed; inset: 0; overflow: hidden; background: #111; }
-.source-frame { display: block; width: 100%; height: 100%; border: 0; background: #111; }
+.source-shell { position: fixed; inset: 0; overflow: hidden; background: #111; touch-action: pinch-zoom; }
+.source-frame { display: block; width: 100%; height: 100%; border: 0; background: #111; touch-action: pinch-zoom; }
 .source-shortcut { position: fixed; z-index: 20; right: 12px; bottom: 10px; min-height: 34px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid #ffffff30; border-radius: 2px; background: #151515eb; color: #d2d2d2; box-shadow: 0 4px 16px #0008; font-size: 9px; font-weight: 850; letter-spacing: .08em; cursor: pointer; }
 .source-shortcut:hover, .source-shortcut:focus-visible { border-color: #d93a50; background: #7f2033; color: white; outline: none; }
 .source-shortcut svg { width: 15px; height: 15px; }
