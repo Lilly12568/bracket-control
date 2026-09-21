@@ -21,9 +21,9 @@ function regexEscape(value: string) {
 function patchAssetCode(value: string) {
   return value
     .replace('img.src = `https://tetr.io/user-content/avatars/${id}.jpg?rv=${avatarRV[id]}`;', 'if (window.__LOCAL_ASSETS?.avatars?.[id]) img.src = window.__LOCAL_ASSETS.avatars[id]; else { const identicon = new Identicon(MD5(id), identicon_settings).toString(); img.src = `data:image/svg+xml;base64,${identicon}`; }')
-    .replaceAll('img.src = `https://tetr.io/res/flags/${code}.png`;', 'img.src = window.__LOCAL_ASSETS?.flags?.[code] || window.__localCountryFlag(code);')
-    .replaceAll('img.src = `https://hatscripts.github.io/circle-flags/flags/${code}.svg`;', 'img.src = window.__LOCAL_ASSETS?.flags?.[code] || window.__localCountryFlag(code);')
-    .replaceAll('img.src = `https://tetr.io/res/league-ranks/${rank}.png`;', 'img.src = window.__LOCAL_ASSETS?.ranks?.[rank] || window.__localRankIcon(rank);')
+    .replaceAll('img.src = `https://tetr.io/res/flags/${code}.png`;', 'img.src = window.__LOCAL_ASSETS?.flags?.[String(code).toLowerCase()] || window.__localCountryFlag(code);')
+    .replaceAll('img.src = `https://hatscripts.github.io/circle-flags/flags/${code}.svg`;', 'img.src = window.__LOCAL_ASSETS?.flags?.[String(code).toLowerCase()] || window.__localCountryFlag(code);')
+    .replaceAll('img.src = `https://tetr.io/res/league-ranks/${rank}.png`;', 'img.src = window.__LOCAL_ASSETS?.ranks?.[String(rank).toLowerCase()] || window.__localRankIcon(rank);')
     .replaceAll('img.src = `https://tetr.io/res/league-ranks/z.png`;', 'img.src = window.__LOCAL_ASSETS?.ranks?.z || window.__localRankIcon("z");');
 }
 
